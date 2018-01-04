@@ -1,0 +1,36 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: #555;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    vertical-align: middle; 
+    color: #eee;
+}
+
+.nav-title {
+    vertical-align: middle;
+    margin-left: 5%;
+}
+
+.nav-links {
+    list-style-type: none;
+    vertical-align: middle;
+    margin-top: 30px;
+    height: 100%;
+}
+
+li {
+    display: inline;
+    margin: 0 20px 0 0;
+    vertical-align: middle;
+}
+
+.home {
+    width: 100%;
+    text-align: center;
+}

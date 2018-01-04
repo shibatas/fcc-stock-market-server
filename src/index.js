@@ -1,25 +1,56 @@
-import React from 'react';
+import React ,{Component} from 'react';
 import ReactDOM from 'react-dom';
+import { 
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom';
 import axios from 'axios';
-import PostsList from './PostsList.js';
+import Header from './Header.js';
+import Home from './Home.js';
+import "./style.css";
 
 require('dotenv').load();
 
 let apiUrl = window.location.origin + '/api';
 
-axios.get(apiUrl)
-.then(res => {
-  console.log('using local server');
-  app(apiUrl);
-})    
-.catch(err => {
-  console.error('local server not running. using heroku deployment of the server instead.');
-  app(process.env.REACT_APP_APIURL);
-});
+class App extends Component {
+  constructor(props) {
+    super(props);
+    const apiUrl = window.location.origin + '/api';
+    const yelpApi = 'https://api.yelp.com/v3/businesses/search';
+    const yelpHeader = {
+      Authorization: 'Bearer rUtKAXMpc3ZQy1_OCU7d1_Ea__lMyZHEr0LjoGGCy02r-4J365VGqtxIyuwDDQfVh9E-3SfXSFXZBaV6W1SXr4PZWpy-78PwIcZ5IZXmedAf-iK4xbOq7DrMDwpOWnYx'
+    };
+    this.state = {
+      yelp: {
+        api: yelpApi,
+        header: yelpHeader,
+        query: {
+          term: '',
+          location: '',
+          categories: 'restaurants'
+        }
+      }
+    }
+  }
+  componentWillMount() {
+    axios.get(this.state.yelp.api, this.state.yelp.header)
+    .then(res => {
+      console.log(res);
+    });
+  }
+  render() {
+    return (
+      <Router>
+        <div>
+          <Header />
+          <Route exact path='/' component={Home} />
+        </div>
+      </Router>
+    );
+  }
 
-const app = (apiUrl) => {
-    console.log('apiUrl = ', apiUrl);
-    ReactDOM.render(<PostsList 
-      url={apiUrl + '/posts'}
-      />, document.getElementById('root'));   
 }
+
+ReactDOM.render(<App />, document.getElementById('root'));
