@@ -17,15 +17,8 @@ let apiUrl = window.location.origin + '/api';
 class App extends Component {
   constructor(props) {
     super(props);
-    const apiUrl = window.location.origin + '/api';
-    const yelpApi = 'https://api.yelp.com/v3/businesses/search';
-    const yelpHeader = {
-      Authorization: 'Bearer rUtKAXMpc3ZQy1_OCU7d1_Ea__lMyZHEr0LjoGGCy02r-4J365VGqtxIyuwDDQfVh9E-3SfXSFXZBaV6W1SXr4PZWpy-78PwIcZ5IZXmedAf-iK4xbOq7DrMDwpOWnYx'
-    };
     this.state = {
       yelp: {
-        api: yelpApi,
-        header: yelpHeader,
         query: {
           term: '',
           location: '',
@@ -35,9 +28,12 @@ class App extends Component {
     }
   }
   componentWillMount() {
-    axios.get(this.state.yelp.api, this.state.yelp.header)
+    axios.get('/api/restaurants')
     .then(res => {
-      console.log(res);
+      console.log('api success', res);
+    })
+    .catch(err => {
+      console.error('api error', err);
     });
   }
   render() {
