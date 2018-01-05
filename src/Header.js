@@ -6,7 +6,7 @@ class Header extends Component {
         return (
             <div className='header'>
                 <div className='nav-title'>
-                    <h1>Title</h1>
+                    <h1>Which Bar?</h1>
                 </div>
                 <div>
                     <ul className='nav-links'>

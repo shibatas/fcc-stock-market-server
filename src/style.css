@@ -30,7 +30,24 @@ li {
     vertical-align: middle;
 }
 
-.home {
+.main {
     width: 100%;
     text-align: center;
+}
+
+.list-container {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.list-card {
+    background-color: #ddd;
+    box-shadow: 1px 1px 1px #555;
+    text-align: center;
+    color: #555;
+    padding: 10px;
+    margin: 10px;
 }

@@ -9,15 +9,17 @@ module.exports = function(router) {
 
     // Yelp query
     router.get('/restaurants', function(req, res) {
-      let query = 'location=Tokyo&term=restaurants';
-      let list = '';
+      console.log(req.query);
+      let location = 'location=' + req.query.location;
+      let term = 'term=' + req.query.term;
+      let query = location + '&' + term;
       request({
         url: process.env.YELP_APIURL + query,
         headers: {
           'Authorization': 'Bearer ' + process.env.YELP_KEY
         }
       }, function(err, data, body) {
-        console.log('error', err);
+        if (err) throw err;
         res.json(JSON.parse(body).businesses);
       });
     })
