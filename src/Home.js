@@ -6,8 +6,26 @@ class Home extends Component {
         super(props);
         this.state = {
             term: 'bars',
-            location: ''
+            location: null,
+            radius: 1000,
+            sort_by: 'distance'
         } 
+    }
+    getLocation = () => {
+        if (navigator.geolocation) {
+            this.props.history.push('/list');
+            navigator.geolocation.getCurrentPosition(data => {
+                console.log('lat', data.coords.latitude, 'long', data.coords.longitude);
+                this.props.getData({
+                    term: this.state.term,
+                    latitude: data.coords.latitude,
+                    longitude: data.coords.longitude,
+                    radius: this.state.radius
+                });
+            });
+        } else {
+            document.getElementById('get-location').disabled =  true;
+        }
     }
     handleChange = (e) => {
         this.setState({
@@ -24,12 +42,12 @@ class Home extends Component {
             <div className='main'>
                 <h1>Where are you?</h1>
                 <div>
-                    <button className='get-location' disabled>Use my current location</button>
+                    <button id='get-location' onClick={this.getLocation} >Use my current location</button>
                 </div>
                 <form>
                     <input 
                         type='text' 
-                        ref='location' 
+                        size='50'
                         placeholder='City name, address, or neighborhood'
                         onChange={this.handleChange}
                     />

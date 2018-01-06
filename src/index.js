@@ -19,23 +19,71 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {}
+      data: [],
+      location: null,
     }
   }
   getData = (query) => {
-    let location = 'location=' + query.location;
+    //first clear existing data
+    this.setState({ data: [] });
     let term = 'term=' + query.term;
-    let request = '/api/restaurants?' + location + '&' + term;
+    let radius = 'radius=' + query.radius;
+    let sort_by = 'sort_by=' + query.sort_by;
+    let request = '/api/yelp?' + term + '&' + radius + '&' + sort_by;
+    if (query.location) {
+      let location = 'location=' + query.location;
+      request += '&' + location + '&' + term;
+    } else if (query.latitude) {
+      let latitude = 'latitude=' + query.latitude;
+      let longitude = 'longitude=' + query.longitude;
+      request += '&' + latitude + '&' + longitude;
+    } else {
+      console.error('getData function error. Invalid query');
+      return;
+    }
     axios.get(request)
     .then(res => {
-      console.log('api success', res.data);
-      this.setState({
-        data: res.data
-      });
+      console.log('yelp api success', res);
+      this.handleResults(res.data);
     })
     .catch(err => {
-      console.error('api error', err);
+      console.error('yelp api error', err);
     });
+  }
+  handleResults = (data) => {
+    // send data to database
+    data.forEach(item => {
+      axios.post('api/bars', item)
+      .then(res => {
+        //console.log('api/bars success', res.data);
+        this.setState({
+          data: [...this.state.data, res.data]
+        })
+      })
+      .catch(err => {
+        console.error('api/bars error', err);
+      })
+    });
+    this.setState({
+      location: data[0].location.city
+    })
+
+  }
+  addGoing = (id) => {
+    let testUser = 'testUser';
+    console.log('new user is going to:', id)
+    let obj = {
+      id: id,
+      username: testUser
+    }
+    axios.post('/api/going', obj)
+    .then(res => {
+      console.log('/api/going success', res);
+      // to do setState, use Object.assign to update only the clicked item
+    })
+    .catch(err => {
+      console.error('api/going error', err);
+    })
   }
   render() {
     return (
@@ -51,7 +99,8 @@ class App extends Component {
           <Route path='/list' render={(routeProps) => (
             <List {...routeProps} 
               data={this.state.data}
-              getData={this.getData} 
+              location={this.state.location}
+              handleGoing={this.addGoing}
             />
           )} />
         </div>

@@ -34,20 +34,34 @@ li {
     width: 100%;
     text-align: center;
 }
+/* Home */
+input {
+    margin: 20px 10px;
+}
 
+/* List */
 .list-container {
     width: 80%;
     margin: auto;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     flex-wrap: wrap;
 }
-
 .list-card {
+    width: 150px;
+    height: 200px;
     background-color: #ddd;
     box-shadow: 1px 1px 1px #555;
     text-align: center;
     color: #555;
     padding: 10px;
     margin: 10px;
+}
+.card-image {
+    width: 100px;
+    height: 70px;
+    object-fit: cover;
+}
+.list-btn {
+    margin: 30px;
 }
