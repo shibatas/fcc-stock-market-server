@@ -11,11 +11,19 @@ module.exports = function(router) {
     // Yelp query
     router.get('/yelp', function(req, res) {
       console.log(req.query);
-      let location = 'location=' + req.query.location;
       let term = 'term=' + req.query.term;
-      let query = location + '&' + term;
+      let query = term;
+      if (req.query.location) {
+        let location = 'location=' + req.query.location;
+        query += '&' + location;
+      } else if (req.query.latitude) {
+        let latitude = 'latitude=' + req.query.latitude;
+        let longitude = 'longitude=' + req.query.longitude;
+        query += '&' + latitude + '&' + longitude;
+      }
+      console.log(query);
       request({
-        url: process.env.YELP_APIURL + query,
+        url: process.env.YELP_APIURL + '?' + query,
         headers: {
           'Authorization': 'Bearer ' + process.env.YELP_KEY
         }
@@ -32,7 +40,7 @@ module.exports = function(router) {
         }, function(err, doc) {
         if (err) throw err;
         if (doc) {
-          console.log('found', doc);
+          //console.log('found', doc);
           doc.name = req.body.name;
           doc.image_url = req.body.image_url;  
           // update doc in case yelp data is changed
@@ -40,7 +48,7 @@ module.exports = function(router) {
             res.json(updatedDoc);
           });
         } else {
-          console.log('not found');
+          //console.log('not found');
           let newBar = new Bar;
           newBar.id = req.body.id;
           newBar.name = req.body.name;
@@ -52,6 +60,20 @@ module.exports = function(router) {
           });
         }
       });
+    })
+
+    // Get a single document from database
+    router.get('/bars/:id', function (req, res) {
+      console.log(req.params.id);
+      Bar.findOne({
+        'id': req.params.id
+      }, function(err, doc) {
+        if (err) throw err;
+        if (doc) {
+          res.json(doc);
+        }
+      });
+
     })
 
     router.post('/going', function(req, res) {

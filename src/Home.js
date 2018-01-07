@@ -12,6 +12,7 @@ class Home extends Component {
         } 
     }
     getLocation = () => {
+        console.log('initiate get location');
         if (navigator.geolocation) {
             this.props.history.push('/list');
             navigator.geolocation.getCurrentPosition(data => {
@@ -22,8 +23,12 @@ class Home extends Component {
                     longitude: data.coords.longitude,
                     radius: this.state.radius
                 });
-            });
+            }, err => { 
+                console.error(err);
+                this.props.history.push('/');
+            }, { enableHighAccuracy: true });
         } else {
+            console.log('no geolocation');
             document.getElementById('get-location').disabled =  true;
         }
     }
@@ -34,6 +39,7 @@ class Home extends Component {
     }
     submitForm = (e) => {
         e.preventDefault();
+        //console.log('submitForm', this.state);
         this.props.getData(this.state);
         this.props.history.push('/list');
     }
