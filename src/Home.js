@@ -45,10 +45,10 @@ class Home extends Component {
     }
     render() {
         return (
-            <div className='main'>
+            <div className='home'>
                 <h1>Where are you?</h1>
-                <div>
-                    <button id='get-location' onClick={this.getLocation} >Use my current location</button>
+                <div className='geolocation'>
+                    <button className='btn btn-default' id='get-location' onClick={this.getLocation} >Use my current location</button>
                 </div>
                 <form>
                     <input 
@@ -57,7 +57,7 @@ class Home extends Component {
                         placeholder='City name, address, or neighborhood'
                         onChange={this.handleChange}
                     />
-                    <input type='submit' value='Search' onClick={this.submitForm} />
+                    <input className='btn btn-primary' type='submit' value='Search' onClick={this.submitForm} />
                 </form>
             </div>
         );

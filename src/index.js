@@ -9,6 +9,7 @@ import axios from 'axios';
 import Header from './Header.js';
 import Home from './Home.js';
 import List from './List';
+import Footer from './Footer';
 import "./style.css";
 
 require('dotenv').load();
@@ -89,6 +90,7 @@ class App extends Component {
               location={this.state.location}
             />
           )} />
+          <Footer />
         </div>
       </Router>
     );

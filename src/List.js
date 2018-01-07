@@ -24,21 +24,25 @@ class List extends Component {
         //console.log('List render', this.state.list);
         if (this.state.list) {
             return (
-                <div className='main'>
+                <div className='list'>
                     <h1>Bars in {this.props.location}</h1>
                     <div className='list-container'>
                         {this.state.list.map(item => {
                             return <Card key={item} id={item} />;
                         })}
                     </div>
-                    <button id='goHome' className='list-btn' onClick={this.handleClick} >Search Again</button>
+                    <div className='link-btn'>
+                        <button id='goHome' className='btn btn-primary' onClick={this.handleClick} >Search Again</button>
+                    </div>
                 </div>
             );
         } else {
             return (
-                <div className='main'>
+                <div className='list-loading'>
                     <p>Loading...</p>
-                    <button id='goHome' className='list-btn' onClick={this.handleClick} >Search Again</button>
+                    <div className='link-btn'>
+                        <button id='goHome' className='btn btn-default' onClick={this.handleClick} >Go Back</button>
+                    </div>
                 </div>
             )
         }
@@ -51,6 +55,8 @@ class Card extends Component {
         this.state = {
             data: null
         }
+    }
+    componentDidMount() {
         this.updateCard();
     }
     updateCard = () => {
@@ -87,9 +93,9 @@ class Card extends Component {
             return (
                 <div className='list-card'>
                     <img className='card-image' src={this.state.data.image_url}/>
-                    <p>{this.state.data.name}</p>
+                    <div className='card-name'><p>{this.state.data.name}</p></div>
                     <p>Going tonight: {this.state.data.going.length}</p>
-                    <button id={this.state.data.id} onClick={this.handleClick} >I'll be there!</button>
+                    <button className='btn btn-default' id={this.state.data.id} onClick={this.handleClick} >I'll be there!</button>
                 </div>    
             );
         } else {
