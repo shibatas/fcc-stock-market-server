@@ -28,7 +28,7 @@ class List extends Component {
                     <h1>Bars in {this.props.location}</h1>
                     <div className='list-container'>
                         {this.state.list.map(item => {
-                            return <Card key={item} id={item} />;
+                            return <Card key={item} id={item} user={this.props.user} />;
                         })}
                     </div>
                     <div className='link-btn'>
@@ -54,6 +54,7 @@ class Card extends Component {
         super(props);
         this.state = {
             data: null,
+            iAmGoing: false,
             btnText: "I'll be there!"
         }
     }
@@ -73,18 +74,27 @@ class Card extends Component {
                 //console.log(timestampDate, todayString);
                 return timestampDate === todayString;
             })
+            let iAmGoing = false;
+            let btnText = "I'll be there!"
+            going.forEach(item => {
+                if (item.id === this.props.user.id) {
+                    iAmGoing = true;
+                    btnText = "I am going"
+                }
+            })
             data.going = going;
             this.setState({
-                data: data
+                data: data,
+                iAmGoing: iAmGoing,
+                btnText: btnText
             })
         });
     }
     addGoing = (id) => {
-        let testUser = 'testUser';
         //console.log('new user is going to:', id)
         let obj = {
-          id: id,
-          username: testUser
+          barId: id,
+          userId: this.props.user.id
         }
         axios.post('/api/going', obj)
         .then(res => {
@@ -95,8 +105,26 @@ class Card extends Component {
           console.error('api/going error', err);
         })
     }
+    deleteGoing = (id) => {
+        let obj = {
+            barId: id,
+            userId: this.props.user.id
+        }
+        axios.delete('/api/going', { data: obj })
+        .then(res => {
+            console.log('/api/going delete success', res);
+            this.updateCard();
+        })
+            .catch(err => {
+            console.error('api/going delete error', err);
+        })
+    }
     handleClick = (e) => {
-        this.addGoing(e.target.id);
+        if (this.state.iAmGoing) {
+            this.deleteGoing(e.target.id);
+        } else {
+            this.addGoing(e.target.id);
+        }
     }
     render() {
         if (this.state.data) {

@@ -30,8 +30,13 @@ html, body {
 }
 
 li {
-    display: inline;
+    display: inline-block;
+    margin: 0 10px;
     vertical-align: middle;
+}
+
+li.link:hover {
+    cursor: pointer;
 }
 
 /* Home */

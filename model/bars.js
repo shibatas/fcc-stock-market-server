@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Going = new Schema({
-    username: String,
+    id: String,
     timestamp: {type: Date, default: Date.now}
 });
 

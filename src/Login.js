@@ -5,7 +5,7 @@ class Login extends Component {
         return (
             <div className='login'>
                 <p>Please login below:</p>
-                <a className='btn btn-primary' href='/auth/facebook' >Facebook</a>
+                <a className='btn btn-primary' onClick={this.props.loginFacebook} >Facebook</a>
             </div>
         );
     }

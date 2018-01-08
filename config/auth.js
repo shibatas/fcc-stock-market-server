@@ -3,9 +3,13 @@
 //const passport = require('passport');
 
 module.exports = function (app, passport) {
+
   app.get('/auth/', function(req, res) {
-    console.log('user', req.user);
-    res.send(req.user);
+    res.send('auth route working');
+  })
+
+  app.get('/auth/user', function(req, res) {
+    res.json(req.user);
   })
   
   // Authentication

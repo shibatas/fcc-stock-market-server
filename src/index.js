@@ -12,7 +12,7 @@ import Login from './Login';
 import Footer from './Footer';
 import "./style.css";
 
-require('dotenv').load();
+//require('dotenv').load();
 
 class App extends Component {
   constructor(props) {
@@ -21,7 +21,27 @@ class App extends Component {
       data: [],
       list: [],
       location: null,
+      user: null
     }
+  }
+  componentDidMount() {
+    this.getUser();
+  }
+  loginFacebook = () => {
+    console.log('login facebook');
+    window.location = '/auth/facebook';
+    /*axios.get('/auth/facebook')
+    .then(res => {
+      console.log('facebook login success');
+      this.getUser();
+    })*/
+  }
+  logout = () => {
+    axios.get('/auth/logout')
+    .then(res => {
+      console.log('logged out');
+      this.getUser();
+    })
   }
   getData = (query) => {
     let term = 'term=' + query.term;
@@ -70,12 +90,32 @@ class App extends Component {
       location: data[0].location.city
     })
   }
+  getUser = () => {
+    axios.get('/auth/user')
+    .then(res => {
+      if (res.data) {
+        this.setState({
+          user: {
+            username: res.data.username,
+            displayName: res.data.displayName,
+            id: res.data.id
+          }
+        })
+      } else {
+        console.log('not logged in');
+        this.setState({
+          user: null
+        })
+      }
+    })
+  }
   render() {
-    console.log('index render', this.props.history);
+    console.log('index render', this.state.user);
     return (
       <Router>
         <div>
-          <Header />
+          <Header user={this.state.user} logout={this.logout}/>
+          <button onClick={this.getUser}>Get User</button>
           <Route exact path='/' render={(routeProps) => (
             <Home {...routeProps} 
               data={this.state.data}
@@ -86,9 +126,14 @@ class App extends Component {
             <List {...routeProps} 
               list={this.state.list}
               location={this.state.location}
+              user={this.state.user}
             />
           )} />
-          <Route path='/login' component={Login} />
+          <Route path='/login' render={(routeProps) => (
+            <Login {...routeProps}
+              loginFacebook={this.loginFacebook}
+            />
+          )} />
           <Footer />
         </div>
       </Router>
