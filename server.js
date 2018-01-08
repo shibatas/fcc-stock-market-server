@@ -15,7 +15,7 @@ const port = process.env.PORT || 4000;
 
 // db config
 const mongoDB = process.env.MONGODB_URI;
-mongoose.connect(mongoDB, { useMongoClient: true })
+mongoose.connect(mongoDB, { useMongoClient: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
