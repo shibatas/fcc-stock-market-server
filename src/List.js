@@ -60,12 +60,21 @@ class Card extends Component {
         this.updateCard();
     }
     updateCard = () => {
+        const today = new Date();
+        const todayString = today.toISOString().slice(0,10);
         //console.log('update card', this.props.id);
         axios.get('api/bars/'+this.props.id)
         .then(res => {
             //console.log(res);
+            let data = Object.assign({}, res.data);
+            let going = data.going.filter(item => {
+                const timestampDate = item.timestamp.slice(0,10);
+                //console.log(timestampDate, todayString);
+                return timestampDate === todayString;
+            })
+            data.going = going;
             this.setState({
-                data: res.data
+                data: data
             })
         });
     }
@@ -92,7 +101,7 @@ class Card extends Component {
         if (this.state.data) {
             return (
                 <div className='list-card'>
-                    <img className='card-image' src={this.state.data.image_url}/>
+                    <img className='card-image' src={this.state.data.image_url} alt={this.state.data.name}/>
                     <div className='card-name'><p>{this.state.data.name}</p></div>
                     <p>Going tonight: {this.state.data.going.length}</p>
                     <button className='btn btn-default' id={this.state.data.id} onClick={this.handleClick} >I'll be there!</button>

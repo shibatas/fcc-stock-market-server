@@ -2,8 +2,7 @@ import React ,{Component} from 'react';
 import ReactDOM from 'react-dom';
 import { 
   BrowserRouter as Router,
-  Route,
-  Link
+  Route
 } from 'react-router-dom';
 import axios from 'axios';
 import Header from './Header.js';
@@ -13,8 +12,6 @@ import Footer from './Footer';
 import "./style.css";
 
 require('dotenv').load();
-
-let apiUrl = window.location.origin + '/api';
 
 class App extends Component {
   constructor(props) {
@@ -73,7 +70,7 @@ class App extends Component {
     })
   }
   render() {
-    //console.log('index render', this.state);
+    console.log('index render', this.props.history);
     return (
       <Router>
         <div>

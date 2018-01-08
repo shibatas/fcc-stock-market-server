@@ -18,6 +18,9 @@ html, body {
     vertical-align: middle;
     margin-left: 5%;
 }
+#title:hover {
+    cursor: pointer;
+}
 
 .nav-links {
     list-style-type: none;
