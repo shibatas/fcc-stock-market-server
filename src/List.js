@@ -88,11 +88,11 @@ class Card extends Component {
         }
         axios.post('/api/going', obj)
         .then(res => {
-          //console.log('/api/going success', res);
+          console.log('/api/going success', res);
           this.updateCard();
         })
         .catch(err => {
-          //console.error('api/going error', err);
+          console.error('api/going error', err);
         })
     }
     handleClick = (e) => {

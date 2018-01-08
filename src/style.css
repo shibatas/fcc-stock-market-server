@@ -31,12 +31,11 @@ html, body {
 
 li {
     display: inline;
-    margin: 0 20px 0 0;
     vertical-align: middle;
 }
 
 /* Home */
-.home, .list-loading {
+.home, .list-loading, .login {
     height: 600px;
     width: 100%;
     text-align: center;

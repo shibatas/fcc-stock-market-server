@@ -5,9 +5,10 @@ import {
   Route
 } from 'react-router-dom';
 import axios from 'axios';
-import Header from './Header.js';
-import Home from './Home.js';
+import Header from './Header';
+import Home from './Home';
 import List from './List';
+import Login from './Login';
 import Footer from './Footer';
 import "./style.css";
 
@@ -48,7 +49,7 @@ class App extends Component {
       this.handleResults(res.data);
     })
     .catch(err => {
-      //console.error('yelp api error', err);
+      console.error('yelp api error', err);
     });
   }
   handleResults = (data) => {
@@ -58,10 +59,10 @@ class App extends Component {
       list.push(item.id);
       axios.post('api/bars', item)
       .then(res => {
-        //console.log('api/bars success', res.data);
+        console.log('api/bars success', res.data);
       })
       .catch(err => {
-        //console.error('api/bars error', err);
+        console.error('api/bars error', err);
       })
     });
     this.setState({
@@ -87,6 +88,7 @@ class App extends Component {
               location={this.state.location}
             />
           )} />
+          <Route path='/login' component={Login} />
           <Footer />
         </div>
       </Router>
