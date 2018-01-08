@@ -53,7 +53,8 @@ class Card extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: null
+            data: null,
+            btnText: "I'll be there!"
         }
     }
     componentDidMount() {
@@ -93,7 +94,7 @@ class Card extends Component {
         .catch(err => {
           //console.error('api/going error', err);
         })
-      }
+    }
     handleClick = (e) => {
         this.addGoing(e.target.id);
     }
@@ -104,7 +105,7 @@ class Card extends Component {
                     <img className='card-image' src={this.state.data.image_url} alt={this.state.data.name}/>
                     <div className='card-name'><p>{this.state.data.name}</p></div>
                     <p>Going tonight: {this.state.data.going.length}</p>
-                    <button className='btn btn-default' id={this.state.data.id} onClick={this.handleClick} >I'll be there!</button>
+                    <button className='btn btn-default' id={this.state.data.id} onClick={this.handleClick} >{this.state.btnText}</button>
                 </div>    
             );
         } else {
