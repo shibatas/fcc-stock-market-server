@@ -109,6 +109,11 @@ module.exports = function (app) {
       if (err) throw err;
       if (doc) {
         //search Going subdocument for req.body.userId and delete
+        doc.going.id('5a51b781c8bf723bafb08aa7').remove();
+        console.log('document removed', doc.going);
+        doc.save(function(err) {
+          if (err) throw err;
+        })
       } else {
         console.log('error doc not found');
       }
