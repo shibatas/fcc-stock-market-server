@@ -28,7 +28,13 @@ class List extends Component {
                     <h1>Bars in {this.props.location}</h1>
                     <div className='list-container'>
                         {this.state.list.map(item => {
-                            return <Card key={item} id={item} user={this.props.user} />;
+                            return (
+                            <Card 
+                                key={item} 
+                                id={item} 
+                                user={this.props.user} 
+                                history={this.props.history} />
+                            );
                         })}
                     </div>
                     <div className='link-btn'>
@@ -92,6 +98,9 @@ class Card extends Component {
     }
     addGoing = (id) => {
         //console.log('new user is going to:', id)
+        this.setState({
+            iAmGoing: true
+        });
         let obj = {
           barId: id,
           userId: this.props.user.id
@@ -106,6 +115,9 @@ class Card extends Component {
         })
     }
     deleteGoing = (id) => {
+        this.setState({
+            iAmGoing: false
+        });
         let obj = {
             barId: id,
             userId: this.props.user.id
@@ -120,10 +132,15 @@ class Card extends Component {
         })
     }
     handleClick = (e) => {
-        if (this.state.iAmGoing) {
-            this.deleteGoing(e.target.id);
+        console.log('List.js click', this.props.user);
+        if (!this.props.user) {
+            this.props.history.push('/login');
         } else {
-            this.addGoing(e.target.id);
+            if (this.state.iAmGoing) {
+                this.deleteGoing(e.target.id);
+            } else {
+               this.addGoing(e.target.id);
+            }
         }
     }
     render() {
@@ -133,7 +150,10 @@ class Card extends Component {
                     <img className='card-image' src={this.state.data.image_url} alt={this.state.data.name}/>
                     <div className='card-name'><p>{this.state.data.name}</p></div>
                     <p>Going tonight: {this.state.data.going.length}</p>
-                    <button className='btn btn-default' id={this.state.data.id} onClick={this.handleClick} >{this.state.btnText}</button>
+                    <button className='btn btn-default' 
+                        id={this.state.data.id} 
+                        onClick={this.handleClick} 
+                    >{this.state.btnText}</button>
                 </div>    
             );
         } else {

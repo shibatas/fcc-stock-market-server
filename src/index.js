@@ -79,7 +79,7 @@ class App extends Component {
       list.push(item.id);
       axios.post('api/bars', item)
       .then(res => {
-        console.log('api/bars success', res.data);
+        //console.log('api/bars success', res.data);
       })
       .catch(err => {
         console.error('api/bars error', err);
@@ -91,6 +91,7 @@ class App extends Component {
     })
   }
   getUser = () => {
+    console.log('get user');
     axios.get('/auth/user')
     .then(res => {
       if (res.data) {
@@ -110,7 +111,7 @@ class App extends Component {
     })
   }
   render() {
-    console.log('index render', this.state.user);
+    //console.log('index render', this.state.user);
     return (
       <Router>
         <div>

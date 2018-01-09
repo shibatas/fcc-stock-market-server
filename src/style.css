@@ -101,6 +101,12 @@ input {
     margin: 30px;
 }
 
+/* Login */
+.login-contents {
+    width: 30%;
+    margin: auto;
+}
+
 /* Footer */
 .footer {
     background-color: white;

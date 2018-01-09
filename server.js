@@ -2,13 +2,16 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
-const routes = require('./config/routes.js');
-const auth = require('./config/auth.js');
+
 const session = require('express-session');
 const passport = require('passport');
 const cors = require('cors');
-
 const app = express();
+
+//const routes = require('./config/routes.js'); 
+const auth = require('./config/auth.js');
+const routes = require('./config/test.js');
+
 app.use(cors());
 
 require('dotenv').load();
@@ -36,8 +39,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Defines api route root
-routes(app);
 auth(app, passport);
+//test(app);
+routes(app);
 
 // Serve static assets
 app.use(express.static(path.resolve('build')));
