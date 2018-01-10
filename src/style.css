@@ -23,19 +23,22 @@ html, body {
 }
 
 .nav-links {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     list-style-type: none;
     vertical-align: middle;
-    margin-top: 30px;
     height: 100%;
+    margin-right: 20px;
 }
 
 li {
     display: inline-block;
     margin: 0 10px;
-    vertical-align: middle;
+    font-size: 1.5em;
 }
 
-li.link:hover {
+li:hover {
     cursor: pointer;
 }
 
