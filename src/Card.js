@@ -80,6 +80,7 @@ class Card extends Component {
     handleClick = (e) => {
         console.log('List.js click', this.props.user);
         if (!this.props.user) {
+            document.cookie = 'referer=' + window.location.pathname;
             this.props.history.push('/login');
         } else {
             if (this.state.iAmGoing) {
