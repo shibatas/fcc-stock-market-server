@@ -9,9 +9,6 @@ const UsersSchema = new Schema({
     id: String, 
     username: String,     //username
     displayName: String,  //display name
-    avatar: String,       //avatar image URL, can be empty
-    skillset: [String],   //array of strings, like "React" and "Nodejs"
-    email: String         //email address
 });
 
 //export our module to use in server.js
