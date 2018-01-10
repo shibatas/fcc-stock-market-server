@@ -1,4 +1,6 @@
+/* global navigator */
 import React, { Component } from 'react';
+import getCookie from './getCookie';
 
 class Home extends Component {
     constructor(props) {
@@ -10,22 +12,17 @@ class Home extends Component {
             sort_by: 'distance'
         } 
     }
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.redirect === '/list') {
-            console.log('received list. redirect to /list');
-            this.props.history.push('/list');
-        }
-    }
     componentDidMount() {
-        if (this.props.redirect === '/list') {
-            console.log('list already exits. redirect to /list');
-            this.props.history.push('/list');
+        let referer = getCookie('referer');
+        console.log('Home redirect to: ', referer);
+        if (referer) {
+            this.props.history.push(referer);
         }
+        document.cookie = 'referer=;';
     }
     getLocation = () => {
         console.log('initiate get location');
         if (navigator.geolocation) {
-            this.props.history.push('/list');
             navigator.geolocation.getCurrentPosition(data => {
                 console.log('lat', data.coords.latitude, 'long', data.coords.longitude);
                 this.props.setQuery({
@@ -35,6 +32,7 @@ class Home extends Component {
                     radius: this.state.radius,
                     sort_by: 'distance'
                 });
+                this.props.history.push('/list');
             }, err => { 
                 console.error(err);
                 this.props.history.push('/');

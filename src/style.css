@@ -103,7 +103,7 @@ input {
 
 /* Login */
 .login-contents {
-    width: 30%;
+    width: 50%;
     margin: auto;
 }
 
@@ -122,7 +122,7 @@ input {
     align-items: baseline;
     border-top: solid 1px #bbb;
 }
-.footer-name {
+.footer-item {
     margin-right: 30px;
     padding-top: 25px;
 }

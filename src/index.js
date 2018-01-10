@@ -20,9 +20,8 @@ class App extends Component {
     super(props);
     this.state = {
       search: false,
-      redirect: false,
       query: null,
-      list: [],
+      list: null,
       location: null,
       user: null
     }
@@ -100,29 +99,24 @@ class App extends Component {
       search: false,
       query: null,
       list: list,
-      redirect: '/list',
       location: data[0].location.city
     })
   }    
   updateByCookie = () => {
     let list = getCookie('list');
     if (list && list.length > 1) {
-      list = list.splie(',');
-      console.log('set list by cookie', list);
+      list = list.split(',');
+      //console.log('set list by cookie', list);
       let location = getCookie('location');
       if (location && location.length > 0) {
-        console.log('set location by cookie', location);
+        //console.log('set location by cookie', location);
         this.setState({
             location: location,
-            list: list,
-            redirect: '/list'
+            list: list
         })
       }
     } else {
       console.log('no cookie info', this.state.list);
-      this.setState({
-        redirect: '/'
-      })
     }
   } 
   getUser = () => {
@@ -146,7 +140,7 @@ class App extends Component {
     })
   }
   render() {
-    console.log('index render', this.state.list);
+    //console.log('index render', this.state.list);
     return (
       <Router>
         <div>
@@ -154,7 +148,6 @@ class App extends Component {
           <Route exact path='/' render={(routeProps) => (
             <Home {...routeProps} 
               setQuery={this.setQuery} 
-              redirect={this.state.redirect}
             />
           )} />
           <Route path='/list' render={(routeProps) => (
