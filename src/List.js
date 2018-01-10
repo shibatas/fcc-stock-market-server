@@ -11,7 +11,7 @@ class List extends Component {
         } 
     }
     componentWillReceiveProps(nextProps) {
-        console.log('List will receive props', nextProps);
+        //console.log('List will receive props', nextProps);
         this.setState({
             list: nextProps.list,
             location: nextProps.location
@@ -53,7 +53,7 @@ class List extends Component {
         }
     }
     render() {
-        console.log('List render', this.state.list);
+        //console.log('List render', this.state.list);
         if (this.state.list) {
             return (
                 <div className='list'>

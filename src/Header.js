@@ -43,7 +43,9 @@ class Nav extends Component {
             return (
                 <div>
                     <ul className='nav-links'>
-                        <li className='link' onClick={this.props.backToSearch}>🔎</li>
+                        <li className='link' onClick={this.props.backToSearch}>
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </li>
                         <li className='link' onClick={this.logout}>Logout</li>
                     </ul>
                 </div>
@@ -52,7 +54,9 @@ class Nav extends Component {
             return (
                 <div>
                     <ul className='nav-links'>
-                        <li className='link' onClick={this.props.backToSearch}>🔎</li>
+                        <li className='link' onClick={this.props.backToSearch}>
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </li>
                         <li className='link' onClick={this.login}>Login</li>
                     </ul>
                 </div>  
