@@ -1,26 +1,35 @@
 {
-  "name": "shibatas-mern-boilerplate",
+  "name": "fcc-nightlife",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "axios": "^0.17.1",
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "mongoose": "^4.13.6",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "request": "^2.83.0"
   },
   "devDependencies": {
     "foreman": "^2.0.0",
-    "nodemon": "^1.12.5",
+    "node-inspector": "^1.1.1",
+    "nodemon": "^1.14.7",
     "react-scripts": "1.0.17"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "start-server": "nodemon server.js",
+    "start": "PORT=3000 react-scripts start",
+    "server": "nodemon server.js",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }
