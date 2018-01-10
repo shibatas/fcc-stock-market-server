@@ -43,15 +43,23 @@ class Home extends Component {
         }
     }
     handleChange = (e) => {
+        let value = null;
+        if (e.target.value !== '') {
+            value = e.target.value;
+        }
         this.setState({
-            location: e.target.value
+            location: value
         });
     }
     submitForm = (e) => {
         e.preventDefault();
         //console.log('submitForm', this.state);
-        this.props.setQuery(this.state);
-        this.props.history.push('/list');
+        if (this.state.location) {
+            this.props.setQuery(this.state);
+            this.props.history.push('/list');
+        } else {
+            console.log('submitted empty form');
+        }
     }
     render() {
         return (
