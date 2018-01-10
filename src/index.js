@@ -105,8 +105,9 @@ class App extends Component {
     })
   }    
   updateByCookie = () => {
-    let list = getCookie('list').split(',');
+    let list = getCookie('list');
     if (list && list.length > 1) {
+      list = list.splie(',');
       console.log('set list by cookie', list);
       let location = getCookie('location');
       if (location && location.length > 0) {
