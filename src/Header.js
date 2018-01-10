@@ -28,13 +28,18 @@ class Nav extends Component {
     logout = () => {
         this.props.logout();
     }
+    backToSearch = () => {
+        document.cookie = 'list=;';
+        document.cookie = 'location=;';
+        this.props.history.push('/');
+    }
     render() {
         if (this.props.user) {
             return (
                 <div>
                     <ul className='nav-links'>
+                        <li className='link' onClick={this.backToSearch}>🔎</li>
                         <li className='link' onClick={this.logout}>Logout</li>
-                        <li>...</li>
                     </ul>
                 </div>
             );
@@ -42,8 +47,8 @@ class Nav extends Component {
             return (
                 <div>
                     <ul className='nav-links'>
+                        <li className='link' onClick={this.backToSearch}>🔎</li>
                         <li className='link' onClick={this.login}>Login</li>
-                        <li>...</li>
                     </ul>
                 </div>  
             )

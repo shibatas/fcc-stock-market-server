@@ -10,17 +10,30 @@ class Home extends Component {
             sort_by: 'distance'
         } 
     }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.redirect === '/list') {
+            console.log('received list. redirect to /list');
+            this.props.history.push('/list');
+        }
+    }
+    componentDidMount() {
+        if (this.props.redirect === '/list') {
+            console.log('list already exits. redirect to /list');
+            this.props.history.push('/list');
+        }
+    }
     getLocation = () => {
         console.log('initiate get location');
         if (navigator.geolocation) {
             this.props.history.push('/list');
             navigator.geolocation.getCurrentPosition(data => {
                 console.log('lat', data.coords.latitude, 'long', data.coords.longitude);
-                this.props.getData({
+                this.props.setQuery({
                     term: this.state.term,
                     latitude: data.coords.latitude,
                     longitude: data.coords.longitude,
-                    radius: this.state.radius
+                    radius: this.state.radius,
+                    sort_by: 'distance'
                 });
             }, err => { 
                 console.error(err);
@@ -39,7 +52,7 @@ class Home extends Component {
     submitForm = (e) => {
         e.preventDefault();
         //console.log('submitForm', this.state);
-        this.props.getData(this.state);
+        this.props.setQuery(this.state);
         this.props.history.push('/list');
     }
     render() {

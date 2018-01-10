@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import getCookie from './getCookie';
 
 class List extends Component {
     constructor(props) {
@@ -9,19 +10,52 @@ class List extends Component {
         } 
     }
     componentWillReceiveProps(nextProps) {
-        //console.log('will receive props', nextProps);
+        console.log('will receive props', nextProps);
+        if (nextProps.redirect === '/') {
+            this.props.history.push('/');
+        }
         this.setState({
-            list: nextProps.list
+            list: nextProps.list,
+            location: nextProps.location
         })
+    }
+    componentDidMount() {
+        if (this.props.search) {
+            console.log('list update by search results');
+            this.props.getData();
+        } else {
+            console.log('no query. list update by cookie');
+            this.props.setByCookie();
+        }
     }
     handleClick = (e) => {
         //console.log('click', e.target.id);
+        switch (e.target.id) {
+            case 'goHome':
+                document.cookie = 'list=;';
+                document.cookie = 'location=;';
+                this.props.history.push('/');
+                break;
+            case 'getCookie':
+                let cookie = getCookie('list');
+                console.log('cookie: ', cookie);
+                if (cookie) {
+                    console.log('set list by cookie');
+                    this.setState({
+                        list: cookie
+                    })
+                }
+                break;
+            default:
+        }
+        
         if (e.target.id === 'goHome') {
             this.props.history.push('/');
+        } else if (e.target.id === 'getCookie') {
         }
     }
     render() {
-        //console.log('List render', this.state.list);
+        console.log('List render', this.state.list);
         if (this.state.list) {
             return (
                 <div className='list'>
@@ -83,7 +117,7 @@ class Card extends Component {
             let iAmGoing = false;
             let btnText = "I'll be there!"
             going.forEach(item => {
-                if (item.id === this.props.user.id) {
+                if (this.props.user && item.id === this.props.user.id) {
                     iAmGoing = true;
                     btnText = "I am going"
                 }
