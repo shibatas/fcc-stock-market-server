@@ -1,21 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const path = require('path');
-
-const session = require('express-session');
-const passport = require('passport');
 const cors = require('cors');
 const app = express();
 
-//const routes = require('./config/routes.js'); 
-const auth = require('./config/auth.js');
-const routes = require('./config/test.js');
-
 app.use(cors());
 
+const routes = require('./config/routes.js');
+
 require('dotenv').load();
-require('./config/passport.js')(passport);
 
 const port = process.env.PORT || 4000;
 
@@ -29,26 +22,8 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Initiate express-session and passport
-app.use(session({
-  secret: 'fcc-nightlife',
-  resave: false,
-  saveUninitialized: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Defines api route root
-auth(app, passport);
-//test(app);
+// Load routes
 routes(app);
-
-// Serve static assets
-app.use(express.static(path.resolve('build')));
-
-app.get('*', function(req, res) {
-  res.sendFile(path.resolve('build', 'index.html'));
-});
 
 app.listen(port, function() {
  console.log(`api running on port ${port}`);
