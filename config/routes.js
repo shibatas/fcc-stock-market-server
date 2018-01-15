@@ -15,7 +15,7 @@ module.exports = function(app) {
         .post(function(req, res, next) {
             // Add a stock symbol
             // Access external api to get stock data and store to DB
-            console.log(req.body);
+            console.log('post request', req.body);
             
             let time = '&function=TIME_SERIES_DAILY';
             let symbol = '&symbol=' + req.body.symbol;
@@ -23,25 +23,40 @@ module.exports = function(app) {
                         
             request.get(url, function(err, req, res) {
                 if (err) throw err;
-                console.log(res);
+                postStock(JSON.parse(res));
             });
-            
-            let newStock = new Stock;
+
+            res.json('stock added')
+        });
+        
+    function postStock(res) {
+        let newStock = new Stock;
             // symbol: String, 
             // updated: { type: Date, default: Date.now },
             // data: [{
                 // date: {type: Date},
                 // value: Number
             // }]
-            
-            newStock.symbol = req.body.symbol;
+        newStock.symbol = res['Meta Data']['2. Symbol'];
 
+        let obj = res['Time Series (Daily)'];
+        for (const prop in obj) {
+            console.log(prop);
             
-            res.json('stock added')
-        });
-        
-    function postStock(data) {
-        console.log(data);
+
+        }
+
+            //.forEach(item => {
+                //console.log(item.keys());
+                //return {
+                    //date: new Date(item.keys()),
+                    //value: 
+                //};
+            //})
+
+        //newStock.data = data['Time Series (Daily)'];
+
+        console.log('new data', newStock);
     }
     
 }
