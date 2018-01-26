@@ -27,7 +27,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Load routes
-routes(app);
+//routes(app);
+
+app.use('/', function(req, res) {
+    res.send('success!');
+})
 
 // setup WebSocket
 const sslOptions = {
