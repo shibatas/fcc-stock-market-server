@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const http = require('http');
+const https = require('https');
+const fs = require('fs');
 const WebSocket = require('ws');
 const routes = require('./config/routes.js');
 
@@ -12,6 +14,7 @@ require('dotenv').load();
 app.use(cors());
 
 const port = process.env.PORT || 4000;
+const httpPort = process.env.HTTP_PORT || 4001;
 
 // db config
 const mongoDB = process.env.MONGODB_URI;
@@ -27,14 +30,16 @@ app.use(bodyParser.json());
 routes(app);
 
 // setup WebSocket
+const sslOptions = {
+    key: fs.readFileSync('key.pem', 'utf8'),
+    cert: fs.readFileSync('cert.pem', 'utf8')
+}
 
-const server = http.createServer(app);
+const server = https.createServer(sslOptions, app).listen(port);
+
+
 const wss = new WebSocket.Server({ 
-    server,
-    verifyClient: (info) => {
-           console.log('verify client', info.origin, info.secure);
-           return true;
-    }
+    server: server
 });
 
 wss.on('connection', function connection(ws, req) {
@@ -47,9 +52,9 @@ wss.on('connection', function connection(ws, req) {
     ws.send('something');
   });
 
-server.listen(port, function() {
-    console.log(`server listening on port ${port}`);
-})
+//server.listen(port, function() {
+   // console.log(`server listening on port ${port}`);
+//})
 
 //app.listen(port, function() {
  //console.log(`api running on port ${port}`);
