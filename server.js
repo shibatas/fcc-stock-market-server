@@ -39,8 +39,8 @@ const sslOptions = {
     cert: fs.readFileSync('cert.pem', 'utf8')
 }
 
-const server = https.createServer(sslOptions, app).listen(port);
-
+//const server = https.createServer(sslOptions, app).listen(port);
+const server = http.createServer(app).listen(port);
 
 const wss = new WebSocket.Server({ 
     server: server
