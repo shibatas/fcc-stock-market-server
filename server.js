@@ -29,12 +29,19 @@ routes(app);
 // setup WebSocket
 
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ 
+    server,
+    verifyClient: (info) => {
+           console.log('verify client', info.origin, info.secure);
+           return true;
+    }
+});
 
 wss.on('connection', function connection(ws, req) {
-  
+    console.log('connection', req);
     ws.on('message', function incoming(message) {
       console.log('received: %s', message);
+      ws.send('thanks for your message');
     });
   
     ws.send('something');
