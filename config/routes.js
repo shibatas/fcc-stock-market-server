@@ -1,7 +1,7 @@
 const request = require('request');
 const Stock = require('../model/stocks.js');
 
-module.exports = function(app) {
+module.exports = function(app, wss) {
     app.route('/test/')
         .get(function(req, res) {
             res.json('api test success'); 
@@ -9,6 +9,7 @@ module.exports = function(app) {
 
     app.route('/')
         .get(function(req, res) {
+
             // Serve all stock data 
             Stock.find({}, function(err, data) {
                 res.json(data);
@@ -18,7 +19,6 @@ module.exports = function(app) {
             // Add a stock symbol
             // Access external api to get stock data and store to DB
             function postStock(input) {
-                console.log('postStock', input);
                 let newStock = new Stock;
                     // symbol: String, 
                     // updated: { type: Date, default: Date.now },
@@ -42,11 +42,16 @@ module.exports = function(app) {
                 newStock.save(function(err, data) {
                     if (err) throw err;
                 });
+
+                wss.clients.forEach(function (client) {
+                    if (client.readyState) {
+                        client.send('Update');
+                    }
+                });
+
                 res.send('New stock added');
             }
-
-            console.log('post request', req);
-
+            
             if (req.body.symbol) {
                 Stock.findOne({ symbol: req.body.symbol }, function(err, data) {
                     if (err) throw err;
@@ -73,6 +78,11 @@ module.exports = function(app) {
                 if (err) throw err;
                 if (data) {
                     data.remove();
+                    wss.clients.forEach(function (client) {
+                        if (client.readyState) {
+                            client.send('Update');
+                        }
+                    });
                     res.send('Data found and removed');
                 } else {
                     res.send('Data not found');

@@ -23,16 +23,15 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // configure body parser for json format
-//app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use(function(req, res, next) {
     console.log('is authorized?', req.client.authorized);
     next();
 })
 
-// Load routes
-routes(app);
+
 
 //app.use('/', function(req, res) {
     //res.send('success!');
@@ -58,21 +57,25 @@ wss.on('connection', function connection(ws, req) {
     ws.on('message', function incoming(message) {
       //console.log('received: %s', message);
       //ws.send(`Received: ${message}`);
+      console.log('wss clients', wss.clients);
       wss.clients.forEach(function (client) {
           console.log('client', client.readyState);
           if (client.readyState) {
               ws.send('New data');
           }
-      });
+      });   
     });
   
     ws.send('Successfully connected');
-  });
+});
+
+// Load routes
+routes(app, wss);
 
 //server.listen(port, function() {
    // console.log(`server listening on port ${port}`);
 //})
 
 //app.listen(port, function() {
- //console.log(`api running on port ${port}`);
+// console.log(`api running on port ${port}`);
 //});
