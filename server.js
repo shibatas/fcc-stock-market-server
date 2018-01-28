@@ -56,8 +56,14 @@ const wss = new WebSocket.Server({
 wss.on('connection', function connection(ws, req) {
     console.log('connection');
     ws.on('message', function incoming(message) {
-      console.log('received: %s', message);
-      ws.send(`Received: ${message}`);
+      //console.log('received: %s', message);
+      //ws.send(`Received: ${message}`);
+      wss.clients.forEach(function (client) {
+          console.log('client', client.readyState);
+          if (client.readyState) {
+              ws.send('New data');
+          }
+      });
     });
   
     ws.send('Successfully connected');
