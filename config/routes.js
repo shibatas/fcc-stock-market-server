@@ -18,6 +18,7 @@ module.exports = function(app) {
             // Add a stock symbol
             // Access external api to get stock data and store to DB
             function postStock(input) {
+                console.log('postStock', input);
                 let newStock = new Stock;
                     // symbol: String, 
                     // updated: { type: Date, default: Date.now },
@@ -44,7 +45,7 @@ module.exports = function(app) {
                 res.send('New stock added');
             }
 
-            console.log('post request', req.body);
+            console.log('post request', req);
 
             if (req.body.symbol) {
                 Stock.findOne({ symbol: req.body.symbol }, function(err, data) {

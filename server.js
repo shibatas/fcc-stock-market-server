@@ -11,7 +11,7 @@ const routes = require('./config/routes.js');
 
 require('dotenv').load();
 
-//app.use(cors());
+app.use(cors());
 
 const port = process.env.PORT || 4000;
 //const httpPort = process.env.HTTP_PORT || 4001;
@@ -26,17 +26,17 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 //app.use(bodyParser.urlencoded({ extended: true }));
 //app.use(bodyParser.json());
 
-// Load routes
-//routes(app);
-
 app.use(function(req, res, next) {
     console.log('is authorized?', req.client.authorized);
     next();
 })
 
-app.use('/', function(req, res) {
-    res.send('success!');
-})
+// Load routes
+routes(app);
+
+//app.use('/', function(req, res) {
+    //res.send('success!');
+//})
 
 // setup WebSocket
 const sslOptions = {
