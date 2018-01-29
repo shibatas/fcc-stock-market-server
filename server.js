@@ -31,12 +31,12 @@ app.use(function(req, res, next) {
 })
 
 // setup WebSocket
-const sslOptions = {
-    key: fs.readFileSync('key.pem', 'utf8'),
-    cert: fs.readFileSync('cert.pem', 'utf8')
-}
+//const sslOptions = {
+    //key: fs.readFileSync('key.pem', 'utf8'),
+    //cert: fs.readFileSync('cert.pem', 'utf8')
+//}
 
-const server = https.createServer(sslOptions, app).listen(port, function() {
+const server = http.createServer(app).listen(port, function() {
     console.log(`server listening on port ${port}`);
 });
 
@@ -47,15 +47,8 @@ const wss = new WebSocket.Server({
 wss.on('connection', function connection(ws, req) {
     console.log('connection');
     ws.on('message', function incoming(message) {
-      //console.log('received: %s', message);
-      //ws.send(`Received: ${message}`);
-      console.log('wss clients', wss.clients);
-      wss.clients.forEach(function (client) {
-          console.log('client', client.readyState);
-          if (client.readyState) {
-              ws.send('New data');
-          }
-      });   
+      console.log('received: %s', message);
+      ws.send(`Received: ${message}`);
     });
   
     ws.send('Successfully connected');
