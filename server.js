@@ -14,7 +14,6 @@ require('dotenv').load();
 app.use(cors());
 
 const port = process.env.PORT || 4000;
-//const httpPort = process.env.HTTP_PORT || 4001;
 
 // db config
 const mongoDB = process.env.MONGODB_URI;
@@ -31,12 +30,6 @@ app.use(function(req, res, next) {
     next();
 })
 
-
-
-//app.use('/', function(req, res) {
-    //res.send('success!');
-//})
-
 // setup WebSocket
 const sslOptions = {
     key: fs.readFileSync('key.pem', 'utf8'),
@@ -46,8 +39,7 @@ const sslOptions = {
 const server = https.createServer(sslOptions, app).listen(port, function() {
     console.log(`server listening on port ${port}`);
 });
-//const server = http.createServer(app).listen(port);
-1
+
 const wss = new WebSocket.Server({ 
     server: server
 });
@@ -71,10 +63,6 @@ wss.on('connection', function connection(ws, req) {
 
 // Load routes
 routes(app, wss);
-
-//server.listen(port, function() {
-   // console.log(`server listening on port ${port}`);
-//})
 
 //app.listen(port, function() {
 // console.log(`api running on port ${port}`);
