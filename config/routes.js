@@ -49,8 +49,6 @@ module.exports = function(app, wss) {
               return colorsTaken.indexOf(item) === -1; 
            });
            
-           console.log(nextColor);
-           
            next(nextColor);
         });
     }
