@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 
 const StocksSchema = new Schema({
     symbol: String, 
+    name: String,
     updated: { type: Date, default: Date.now },
     data: [{
         date: {type: Date},

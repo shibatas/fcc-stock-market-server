@@ -25,11 +25,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(function(req, res, next) {
-    console.log('is authorized?', req.client.authorized);
-    next();
-})
-
 // setup WebSocket
 //const sslOptions = {
     //key: fs.readFileSync('key.pem', 'utf8'),

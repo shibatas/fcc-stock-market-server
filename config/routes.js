@@ -12,13 +12,14 @@ module.exports = function(app, wss) {
 
             // Serve all stock data 
             Stock.find({}, function(err, data) {
+                if (err) throw err;
                 res.json(data);
             });
         })
         .post(function(req, res, next) {
             // Add a stock symbol
             // Access external api to get stock data and store to DB
-            function postStock(input) {
+            function postStock(data, name) {
                 let newStock = new Stock;
                     // symbol: String, 
                     // updated: { type: Date, default: Date.now },
@@ -26,18 +27,19 @@ module.exports = function(app, wss) {
                         // date: {type: Date},
                         // value: Number
                     // }]
-                newStock.symbol = input['Meta Data']['2. Symbol'];
+                newStock.symbol = data['Meta Data']['2. Symbol'];
+                newStock.name = name;
         
-                let data = [];
-                let obj = input['Time Series (Daily)'];
+                let dataFormatted = [];
+                let obj = data['Time Series (Daily)'];
                 for (const prop in obj) {
-                    data.push({
+                    dataFormatted.push({
                         date: new Date(prop),
                         value: obj[prop]['4. close']
                     });
                 }
         
-                newStock.data = data;
+                newStock.data = dataFormatted;
         
                 newStock.save(function(err, data) {
                     if (err) throw err;
@@ -52,19 +54,23 @@ module.exports = function(app, wss) {
                 res.send('New stock added');
             }
             
-            if (req.body.symbol) {
-                Stock.findOne({ symbol: req.body.symbol }, function(err, data) {
+            
+            const symbol = req.body.symbol;
+            const name = req.body.name;
+            
+            if (symbol) {
+                Stock.findOne({ symbol: symbol }, function(err, data) {
                     if (err) throw err;
                     if (data) {
                         res.send('Stock already exists');
                     } else {
-                        let time = '&function=TIME_SERIES_DAILY';
-                        let symbol = '&symbol=' + req.body.symbol;
-                        let url = process.env.STOCK_API_URL + time + symbol;
+                        let timeParam = '&function=TIME_SERIES_DAILY';
+                        let symbolParam = '&symbol=' + symbol;
+                        let url = process.env.STOCK_API_URL + timeParam + symbolParam;
             
                         request.get(url, function(err, req, res) {
                             if (err) throw err;
-                            postStock(JSON.parse(res));
+                            postStock(JSON.parse(res), name);
                         });
                     }
                 });    
